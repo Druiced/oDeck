@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        
+        UINavigationBar.appearance().barTintColor = UIColor(red: 0, green: 255, blue: 255, alpha: 0.3)
+        
+        // Pulling Parse.Com Keys from Keys.plist file so they aren't stored on GitHub
+        let path = NSBundle.mainBundle().pathForResource("Keys", ofType: "plist")
+        let dict = NSDictionary(contentsOfFile: path!)
+        let setApplicationId: AnyObject = dict!.objectForKey("setApplicationId")!
+        let clientKey: AnyObject = dict!.objectForKey("clientKey")!
+        
+        Parse.enableLocalDatastore()
+        // Initialize Parse.
+        Parse.setApplicationId(setApplicationId as! String, clientKey: clientKey as! String)
+        // [Optional] Track statistics around application opens.
+        PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
+        //trackAppOpenedWithLaunchOptions(launchOptions) //this is what parse said to use, it didnt work.
+
+        
         return true
     }
 

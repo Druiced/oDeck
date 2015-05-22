@@ -7,8 +7,16 @@
 //
 
 import UIKit
+import Parse
+
+var deviceId: String?
 
 class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+
+
+    
+    var timeLineData:NSMutableArray = NSMutableArray()
+    var sequenceArray = [String]()
     var cardCountArray:[Int] = []
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,25 +59,25 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        var headerView:UIView = UIView(frame: CGRectMake(0, 0, tableView.bounds.size.width, 35.0))
+        var headerView:UIView = UIView(frame: CGRectMake(0, 0, tableView.bounds.size.width, 20.0))
         
-        var hLayout = HorizontalFitLayout(height: 30)
+        var hLayout = HorizontalFitLayout(height: 20)
         hLayout.backgroundColor = UIColor.cyanColor()
         headerView.addSubview(hLayout)
         
-        let view1 = UILabel(frame: CGRectMake(0, 0, 75, 30))
+        let view1 = UILabel(frame: CGRectMake(0, 0, 75, 20))
         view1.backgroundColor = UIColor.redColor()
         view1.textAlignment = .Center
         view1.text = ("\(section)")
         hLayout.addSubview(view1)
         
-        let view2 = UILabel(frame: CGRectMake(0, 0, 0, 30))
+        let view2 = UILabel(frame: CGRectMake(0, 0, 0, 20))
         view2.backgroundColor = UIColor.magentaColor()
         view2.text = ("05/21/15 @ 20:48")
         view2.textAlignment = .Center
         hLayout.addSubview(view2)
         
-        let view3 = UILabel(frame: CGRectMake(0, 0, 75, 30))
+        let view3 = UILabel(frame: CGRectMake(0, 0, 75, 20))
         view3.backgroundColor = UIColor.greenColor()
         view3.text = ("\(cardCountArray[section])")
         view3.textAlignment = .Center
@@ -80,7 +88,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30.0
+        return 20.0
     }
     
     class HorizontalLayout: UIView {
@@ -163,6 +171,46 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             
         }
         
+    }
+
+    @IBAction func loadData() {
+        
+        // Load Parse.com data
+        timeLineData.removeAllObjects()
+        sequenceArray.removeAll()
+        
+        var findTimelineData = PFQuery(className:"KickDeck")
+        findTimelineData.whereKey("Device", equalTo:deviceId!)
+        findTimelineData.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]?, error: NSError?) -> Void in
+            
+            if error == nil {
+                // The find succeeded.
+                println("Successfully retrieved \(objects!.count) objects.")
+                // Do something with the found objects
+                if let objects = objects as? [PFObject] {
+                    for object in reverse(objects) {
+                        println(object.objectId)
+                        self.timeLineData.addObject(object)
+                        println("\(self.timeLineData.count)")
+                    }
+                    
+                    for (index, item) in enumerate(self.timeLineData) {
+                        
+                        let deck:PFObject = self.timeLineData.objectAtIndex(index) as! PFObject
+                        let seq = deck.objectForKey("Sequence") as! String
+                        self.sequenceArray.insert(seq, atIndex: index)
+                        
+                    }
+                    
+//                    tableView.reloadData()
+                    
+                }
+                
+            } else {
+                println("Error: \(error!) \(error!.userInfo!)")
+            }
+        }
     }
 
     
