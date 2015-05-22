@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//test push from xcode
+
 class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
     var cardCountArray:[Int] = []
     override func viewDidLoad() {
@@ -51,20 +51,120 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        var headerView:UIView = UIView(frame: CGRectMake(0, 0, tableView.bounds.size.width, 70.0))
-        var labelTitle:UILabel = UILabel(frame: CGRectMake(0, 0, tableView.bounds.size.width, 35))
-        var descriptionTitle:UILabel = UILabel(frame: CGRectMake(0, 20,tableView.bounds.size.width , 30))
-        headerView.addSubview(labelTitle)
-        headerView.addSubview(descriptionTitle)
-        labelTitle.text = "TOTAL_CARDS in section:\(section)"
-        descriptionTitle.text = "This CARD_SECTION contains \(cardCountArray[section]) CARDS"
+        var headerView:UIView = UIView(frame: CGRectMake(0, 0, tableView.bounds.size.width, 35.0))
+        
+        var hLayout = HorizontalFitLayout(height: 30)
+        hLayout.backgroundColor = UIColor.cyanColor()
+        headerView.addSubview(hLayout)
+        
+        let view1 = UILabel(frame: CGRectMake(0, 0, 75, 30))
+        view1.backgroundColor = UIColor.redColor()
+        view1.textAlignment = .Center
+        view1.text = ("\(section)")
+        hLayout.addSubview(view1)
+        
+        let view2 = UILabel(frame: CGRectMake(0, 0, 0, 30))
+        view2.backgroundColor = UIColor.magentaColor()
+        view2.text = ("05/21/15 @ 20:48")
+        view2.textAlignment = .Center
+        hLayout.addSubview(view2)
+        
+        let view3 = UILabel(frame: CGRectMake(0, 0, 75, 30))
+        view3.backgroundColor = UIColor.greenColor()
+        view3.text = ("\(cardCountArray[section])")
+        view3.textAlignment = .Center
+        hLayout.addSubview(view3)
+        
+        
         return headerView
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50.0
+        return 30.0
     }
     
+    class HorizontalLayout: UIView {
+        
+        var xOffsets: [CGFloat] = []
+        
+        init(height: CGFloat) {
+            super.init(frame: CGRectMake(0, 0, 0, height))
+        }
+        
+        required init(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        override func layoutSubviews() {
+            
+            var width: CGFloat = 0
+            
+            for i in 0..<subviews.count {
+                var view = subviews[i] as! UIView
+                view.layoutSubviews()
+                width += xOffsets[i]
+                view.frame.origin.x = width
+                width += view.frame.width
+            }
+            
+            self.frame.size.width = width
+            
+        }
+        
+        override func addSubview(view: UIView) {
+            
+            xOffsets.append(view.frame.origin.x)
+            super.addSubview(view)
+            
+        }
+        
+        func removeAll() {
+            
+            for view in subviews {
+                view.removeFromSuperview()
+            }
+            xOffsets.removeAll(keepCapacity: false)
+            
+        }
+        
+    }
+    
+    class HorizontalFitLayout: HorizontalLayout {
+        
+        
+        override init(height: CGFloat) {
+            super.init(height: height)
+        }
+        
+        required init(coder aDecoder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        override func layoutSubviews() {
+            
+            var width: CGFloat = 0
+            var zeroWidthView: UIView?
+            
+            for i in 0..<subviews.count {
+                var view = subviews[i] as! UIView
+                width += xOffsets[i]
+                if view.frame.width == 0 {
+                    zeroWidthView = view
+                } else {
+                    width += view.frame.width
+                }
+            }
+            
+            if width < superview!.frame.width && zeroWidthView != nil {
+                zeroWidthView!.frame.size.width = superview!.frame.width - width
+            }
+            
+            super.layoutSubviews()
+            
+        }
+        
+    }
+
     
 }
 
