@@ -19,8 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         
-        UINavigationBar.appearance().barTintColor = UIColor(red: 0, green: 255, blue: 255, alpha: 0.3)
-        
+        UINavigationBar.appearance().barTintColor = UIColor(red: 0.322, green: 0.459, blue: 0.702, alpha: 1)        
         // Pulling Parse.Com Keys from Keys.plist file so they aren't stored on GitHub
         let path = NSBundle.mainBundle().pathForResource("Keys", ofType: "plist")
         let dict = NSDictionary(contentsOfFile: path!)

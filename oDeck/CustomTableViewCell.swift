@@ -11,7 +11,7 @@ import UIKit
 class CustomTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollectionViewDelegate {
     
     @IBOutlet weak var foldersCollectionView: UICollectionView!
-    
+    var stringForCell:String = ""
     //    override init(frame: CGRect) {
     //        super.init(frame: frame)
     //    }
@@ -36,8 +36,8 @@ class CustomTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
         //configure our collectionview
         var aFlowLayout : UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         aFlowLayout.scrollDirection = UICollectionViewScrollDirection.Horizontal
-        aFlowLayout.itemSize = CGSizeMake(60.0, 90.0)
-        aFlowLayout.minimumLineSpacing = 10.0
+        aFlowLayout.itemSize = CGSizeMake(112.0, 156.0)
+        aFlowLayout.minimumLineSpacing = 5.0
         aFlowLayout.minimumInteritemSpacing = 0.0
         aFlowLayout.sectionInset = UIEdgeInsetsMake(2, 9, 0, 10)
         foldersCollectionView.collectionViewLayout = aFlowLayout
@@ -71,12 +71,47 @@ class CustomTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollecti
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var cell :CustomCollectionViewCell? = collectionView.dequeueReusableCellWithReuseIdentifier("FOLDER_CELL", forIndexPath: indexPath) as? CustomCollectionViewCell
-        cell?.aLabel.text = "Card:\(indexPath.row)"
+
+        
+        var str:NSString = stringForCell
+        var length = str.length
+        var totalLlength:Int =  length/2
+        var indexStart   = indexPath.row * (2);
+//        var aRange1 = NSMakeRange(indexStart, 1)
+//        var cardString1:NSString = str.substringWithRange(aRange1)
+        var aRange = NSMakeRange(indexStart, 2)
+        var cardString:NSString = str.substringWithRange(aRange)
+
+
+        cell?.aLabel.text   = "\(indexPath.row + 1)"
+        cell?.aLabel.textAlignment = NSTextAlignment.Center
+        let imageNameString = "\(cardString).png"
+        let front = UIImage(named: imageNameString)
+        
+        //cell.ImageView.backgroundColor = UIColor.orangeColor()
+        cell?.imageView.image = front
+//        cell!.imageView.contentMode = UIViewContentMode.ScaleToFill
+
+//        cell?.imageView.contentMode = UIViewContentMode.Center
+        //front.contentMode = UIViewContentMode.ScaleToFill
+        
+//        cell?.aLabel.text = "Card:\(indexPath.row)"
+//        println("indexPath: \(indexPath.row)")
+        println("indexPath: \(indexPath.row)")
+        
+//        cell?.aLabel.text = "Card:\(sequenceArray[indexPath.row])"
+
+        println("Card: \(indexPath.row)")
+        // lay out each card by index path starting with 0 for the 0th card
         return cell!
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return folderCount!
+        var str:NSString = stringForCell
+        var length:Int = str.length
+        return length / 2
+        
+        //        return folderCount!
     }
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {

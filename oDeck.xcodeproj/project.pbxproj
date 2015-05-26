@@ -30,6 +30,8 @@
 		49F6FD8B1B0EFF00009F5070 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F6FD8A1B0EFF00009F5070 /* SystemConfiguration.framework */; };
 		49F6FD8D1B0EFF0B009F5070 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F6FD8C1B0EFF0B009F5070 /* libz.dylib */; };
 		49F6FD8F1B0EFF1C009F5070 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 49F6FD8E1B0EFF1C009F5070 /* libsqlite3.dylib */; };
+		49F6FD921B0F0389009F5070 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49F6FD911B0F0389009F5070 /* Keys.plist */; };
+		49F6FD941B0F05D0009F5070 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6FD931B0F05D0009F5070 /* ComposeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,8 @@
 		49F6FD8A1B0EFF00009F5070 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		49F6FD8C1B0EFF0B009F5070 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		49F6FD8E1B0EFF1C009F5070 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		49F6FD911B0F0389009F5070 /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
+		49F6FD931B0F05D0009F5070 /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				49F6FD1F1B0EBEE3009F5070 /* AppDelegate.swift */,
+				49F6FD931B0F05D0009F5070 /* ComposeViewController.swift */,
 				49F6FD431B0EBFD4009F5070 /* CustomCollectionViewCell.xib */,
 				49F6FD441B0EBFD4009F5070 /* CustomTableViewCell.xib */,
 				49F6FD211B0EBEE3009F5070 /* ViewController.swift */,
@@ -142,6 +147,7 @@
 		49F6FD1D1B0EBEE3009F5070 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				49F6FD911B0F0389009F5070 /* Keys.plist */,
 				49F6FD1E1B0EBEE3009F5070 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -264,6 +270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49F6FD921B0F0389009F5070 /* Keys.plist in Resources */,
 				49F6FD251B0EBEE3009F5070 /* Main.storyboard in Resources */,
 				49F6FD2A1B0EBEE3009F5070 /* LaunchScreen.xib in Resources */,
 				49F6FD271B0EBEE3009F5070 /* Images.xcassets in Resources */,
@@ -286,6 +293,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49F6FD941B0F05D0009F5070 /* ComposeViewController.swift in Sources */,
 				49F6FD401B0EBF1F009F5070 /* CustomTableViewCell.swift in Sources */,
 				49F6FD221B0EBEE3009F5070 /* ViewController.swift in Sources */,
 				49F6FD201B0EBEE3009F5070 /* AppDelegate.swift in Sources */,

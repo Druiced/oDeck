@@ -10,18 +10,28 @@ import UIKit
 import Parse
 
 var deviceId: String?
+var sequenceArray = [String]()
+var dateArray = [String]()
+var idArray = [String]()
 
-class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
 
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    
+    @IBOutlet weak var tableView: UITableView!
     var timeLineData:NSMutableArray = NSMutableArray()
-    var sequenceArray = [String]()
     var cardCountArray:[Int] = []
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        cardCountArray = [5,15,6,12,7,10,20,1,2,7,25,20,3,1,2,3,4,23,4,5,7,6,4,3,5,2,1,4,5,6,8,9,1,2,3,4,11,2,3,45,5,2,4,5,6,2,2,1,4,5,67,5,4,7,8,9,2,1,2,3,3,3,3,31,1,1,12,3,42,1,2,34,4,5,2,2,1,4,5,4,1,2,34,5,5,5,4,21,2,3,3,11,23,3,32,1]
+        deviceId = UIDevice.currentDevice().identifierForVendor.UUIDString
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        //   if noRefresh == false {
+        loadData()
+        //noRefresh = true
+        //}
     }
     
     override func didReceiveMemoryWarning() {
@@ -31,7 +41,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
-        return cardCountArray.count
+        return timeLineData.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
@@ -46,7 +56,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         {
             cell = CustomTableViewCell.CreateCustomCell()
         }
-        cell?.folderCount = cardCountArray[indexPath.section]
+        cell?.stringForCell = sequenceArray[indexPath.section]
         cell?.foldersCollectionView.reloadData()
         cell?.clipsToBounds = true
         return cell!;
@@ -54,36 +64,46 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
     {
-        return 100.0
+        return 160.0
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         var headerView:UIView = UIView(frame: CGRectMake(0, 0, tableView.bounds.size.width, 20.0))
-        
+        var str:NSString = sequenceArray[section]
+        var length:Int = str.length
+        let cellCardCount = length / 2
         var hLayout = HorizontalFitLayout(height: 20)
         hLayout.backgroundColor = UIColor.cyanColor()
         headerView.addSubview(hLayout)
-        
-        let view1 = UILabel(frame: CGRectMake(0, 0, 75, 20))
-        view1.backgroundColor = UIColor.redColor()
-        view1.textAlignment = .Center
-        view1.text = ("\(section)")
+
+        // TOP LEFT Section Counter for now
+        let view1 = UIButton(frame: CGRectMake(0, 0, 120, 20))
+        view1.backgroundColor = UIColor(red: 0.322, green: 0.459, blue: 0.702, alpha: 1)
+//        view1.shadowColor = UIColor.whiteColor()
+//        view1.textColor = UIColor.blueColor()
+//        view1.textAlignment = .Center
+        view1.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        view1.setTitle("\(idArray[section])", forState: .Normal)
+        view1.titleLabel?.textAlignment = .Left
+        view1.tag = section
+        view1.addTarget(self, action: "seqTouched:", forControlEvents: UIControlEvents.TouchUpInside)
         hLayout.addSubview(view1)
         
+        // TOP CENTER Date Display
         let view2 = UILabel(frame: CGRectMake(0, 0, 0, 20))
-        view2.backgroundColor = UIColor.magentaColor()
-        view2.text = ("05/21/15 @ 20:48")
+        view2.backgroundColor =  UIColor(red: 0.322, green: 0.459, blue: 0.702, alpha: 1)
+        view2.textColor = UIColor.whiteColor()
+        view2.text = ("\(dateArray[section])")
         view2.textAlignment = .Center
         hLayout.addSubview(view2)
-        
-        let view3 = UILabel(frame: CGRectMake(0, 0, 75, 20))
-        view3.backgroundColor = UIColor.greenColor()
-        view3.text = ("\(cardCountArray[section])")
-        view3.textAlignment = .Center
+
+        // TOP RIGHT Card Count
+        let view3 = UILabel(frame: CGRectMake(0, 0, 100, 20))
+        view3.backgroundColor =  UIColor(red: 0.322, green: 0.459, blue: 0.702, alpha: 1)
+        view3.textColor = UIColor.whiteColor()
+        view3.text = ("\(cellCardCount) Cards")
+        view3.textAlignment = .Right
         hLayout.addSubview(view3)
-        
-        
         return headerView
     }
     
@@ -91,22 +111,26 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         return 20.0
     }
     
+    func seqTouched(sender: UIButton!) {
+        var buttonTag:UIButton = sender
+        var alertView = UIAlertView();
+        alertView.addButtonWithTitle("\(buttonTag.tag)");
+        alertView.title = "title";
+        alertView.message = "\(idArray[buttonTag.tag])";
+        alertView.show();
+    }
+    
     class HorizontalLayout: UIView {
-        
         var xOffsets: [CGFloat] = []
-        
         init(height: CGFloat) {
             super.init(frame: CGRectMake(0, 0, 0, height))
         }
-        
         required init(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-        
+
         override func layoutSubviews() {
-            
             var width: CGFloat = 0
-            
             for i in 0..<subviews.count {
                 var view = subviews[i] as! UIView
                 view.layoutSubviews()
@@ -114,32 +138,23 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                 view.frame.origin.x = width
                 width += view.frame.width
             }
-            
             self.frame.size.width = width
-            
         }
-        
+
         override func addSubview(view: UIView) {
-            
             xOffsets.append(view.frame.origin.x)
             super.addSubview(view)
-            
         }
         
         func removeAll() {
-            
             for view in subviews {
                 view.removeFromSuperview()
             }
             xOffsets.removeAll(keepCapacity: false)
-            
         }
-        
     }
     
     class HorizontalFitLayout: HorizontalLayout {
-        
-        
         override init(height: CGFloat) {
             super.init(height: height)
         }
@@ -149,7 +164,6 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
         
         override func layoutSubviews() {
-            
             var width: CGFloat = 0
             var zeroWidthView: UIView?
             
@@ -166,21 +180,17 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
             if width < superview!.frame.width && zeroWidthView != nil {
                 zeroWidthView!.frame.size.width = superview!.frame.width - width
             }
-            
             super.layoutSubviews()
-            
         }
-        
     }
 
     @IBAction func loadData() {
-        
         // Load Parse.com data
         timeLineData.removeAllObjects()
         sequenceArray.removeAll()
-        
-        var findTimelineData = PFQuery(className:"KickDeck")
+        var findTimelineData = PFQuery(className:"oDeck")
         findTimelineData.whereKey("Device", equalTo:deviceId!)
+        findTimelineData.orderByDescending("updatedAt")
         findTimelineData.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             
@@ -189,30 +199,27 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
                 println("Successfully retrieved \(objects!.count) objects.")
                 // Do something with the found objects
                 if let objects = objects as? [PFObject] {
-                    for object in reverse(objects) {
+                    for object in objects {
                         println(object.objectId)
                         self.timeLineData.addObject(object)
                         println("\(self.timeLineData.count)")
                     }
                     
                     for (index, item) in enumerate(self.timeLineData) {
-                        
                         let deck:PFObject = self.timeLineData.objectAtIndex(index) as! PFObject
                         let seq = deck.objectForKey("Sequence") as! String
-                        self.sequenceArray.insert(seq, atIndex: index)
-                        
+                        sequenceArray.insert(seq, atIndex: index)
+                        var dateFormatter = NSDateFormatter()
+                        dateFormatter.dateFormat = "MM/dd hh:mm:ss"
+                        dateArray.insert(dateFormatter.stringFromDate(deck.updatedAt!), atIndex: index)
+                        let sId = deck.objectId
+                        println("sID: \(sId)")
+                        idArray.insert(sId!, atIndex: index)
                     }
-                    
-//                    tableView.reloadData()
-                    
+                    self.tableView.reloadData()
                 }
-                
             } else {
-                println("Error: \(error!) \(error!.userInfo!)")
             }
         }
     }
-
-    
 }
-
