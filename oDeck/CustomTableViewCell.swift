@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CustomTableViewCell: UITableViewCell,UICollectionViewDataSource,UICollectionViewDelegate {
+class CustomTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet weak var foldersCollectionView: UICollectionView!
     var stringForCell:String = ""

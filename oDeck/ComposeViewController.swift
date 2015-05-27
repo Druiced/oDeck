@@ -11,33 +11,83 @@ import Parse
 
 //var deviceId: String?
 
-class ComposeViewController: UIViewController {
+class ComposeViewController: UIViewController,  UICollectionViewDelegateFlowLayout, UICollectionViewDataSource  {
     //notes https://www.youtube.com/watch?v=DGt1yBxBw9k
     @IBOutlet var a2: UILabel!
-    @IBOutlet var h1: UILabel!
-    @IBOutlet var h2: UILabel!
-    @IBOutlet var i1: UILabel!
-    @IBOutlet var i2: UILabel!
-    @IBOutlet var j1: UILabel!
-    @IBOutlet var j2: UILabel!
-    @IBOutlet var k1: UILabel!
-    @IBOutlet var k2: UILabel!
-    @IBOutlet var l1: UILabel!
-    @IBOutlet var l2: UILabel!
-    @IBOutlet var m1: UILabel!
-    @IBOutlet var m2: UILabel!
     @IBOutlet var n1: UILabel!
     @IBOutlet var n2: UILabel!
 
-
+    @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
+        layout.itemSize = CGSize(width: 90, height: 120)
+        collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+  
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 14
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier("Cell", forIndexPath: indexPath) as! UICollectionViewCell
+        cell.backgroundColor = UIColor.orangeColor()
+        return cell
+    }
+
+    //
+    
+    
+/*    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        var cell = collectionView.dequeueReusableCellWithReuseIdentifier("CollectionViewCell", forIndexPath: indexPath) as CollectionViewCell
+        
+        var str:NSString = inSequence
+        var length = str.length
+        var totalLlength:Int =  length/2
+        var indexStart   = indexPath.row * (2);
+        var aRange = NSMakeRange(indexStart, 2)
+        var cardString:NSString = str.substringWithRange(aRange)
+        
+        let imageNameString = "\(cardString).png"
+        let front = UIImage(named: imageNameString)
+        
+        //cell.ImageView.backgroundColor = UIColor.orangeColor()
+        cellImage.image = front
+        //        cell!.imageView.contentMode = UIViewContentMode.ScaleToFill
+        
+        //        cell?.imageView.contentMode = UIViewContentMode.Center
+        //front.contentMode = UIViewContentMode.ScaleToFill
+        
+        //     cell?.aLabel.text = "Card:\(indexPath.row)"
+        //        println("indexPath: \(indexPath.row)")
+        println("indexPath: \(indexPath.row)")
+        
+        //        cell?.aLabel.text = "Card:\(sequenceArray[indexPath.row])"
+        
+        println("Card: \(indexPath.row)")
+        // lay out each card by index path starting with 0 for the 0th card
+        return cell
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        var str:NSString = stringForCell
+        var length:Int = str.length
+        return length / 2
+        
+        //        return folderCount!
+    }
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+*/
+//
+    
     
     @IBAction func saveSequence(sender: AnyObject) {
        
@@ -80,29 +130,19 @@ class ComposeViewController: UIViewController {
 
             if self.n1.text == "" {
             
-                a2.text = "Select Card Value First"
+                println("Select Card Value First")
             
             } else {
 
-                i1.text = j1.text
-                i2.text = j2.text
-                j1.text = k1.text
-                j2.text = k2.text
-                k1.text = l1.text
-                k2.text = l2.text
-                l1.text = m1.text
-                l2.text = m2.text
                 self.n2.text = buttonDump
-                m1.text = n1.text
-                m2.text = n2.text
                 n1.text = ""
                 n2.text = ""
                 inSequence.append(firstChar)
-                a2.text = String(stringInterpolationSegment: inSequence)
+                println(String(stringInterpolationSegment: inSequence))
                 firstButton!.backgroundColor = UIColor.blueColor()
             
                 //count number of hands
-                h2.text = "\((count(inSequence)/2))"
+                a2.text = "\((count(inSequence)/2))"
             
             }
             
