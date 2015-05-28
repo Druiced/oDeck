@@ -244,9 +244,8 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
     func resetTheButton() {
         let oneButton = self.view.viewWithTag(firstButtonId) as! UIButton
         let image0 = UIImage(named: "\(buttonTags[firstButtonId]).png")
-        
         oneButton.setImage(image0, forState: .Normal)
-
+        firstChar = ""
     }
     
     @IBAction func backSpace(sender: AnyObject) {
