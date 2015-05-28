@@ -12,27 +12,24 @@ import Parse
 class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     var collectionView: UICollectionView?
-    let buttonTags = ["K", "W", "X", "delete", "T", "J", "Q", "S", "7", "8", "9", "D", "4", "5", "6", "H", "A", "2", "3", "S", ]
+    let buttonTags = ["e", "W", "X", "I", "T", "J", "Q", "S", "7", "8", "9", "D", "4", "5", "6", "H", "A", "2", "3", "S", "K"]
+    
+    // Had to use String instead of Character becuase Swift doesn't like empty character variables
     var firstChar = ""
+    // These store buttones pressed to complete a pair of buttons
     var secondChar = ""
+    // Stores our string that will be appended, modified and saved to database
+    var inSequence = String()
+    //    var firstButton: Int? // Storing button information - before required to use tags, can delete
+    
+    // Store first button ID so we can swap it back to normal image (not highlighted)
     var firstButtonId: Int!
-
+    // Logic below goes off of character instead of tag, should be able to consolidate to tags only
+    var buttonChar = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-
-        
-        addFiveVer() /*
-
-        Designate # of rows
-        Designate # of columns in each row
-        Set image for column 2 - 6
-        
-
-*/
-
+        addFiveVer()
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,7 +50,7 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
 
     func addFiveVer() {
         //master (vert) rows with addSubView of columns
-        //pull this out in to reusable function later!!
+        //this can be pulled into reusable functions later
         
         view.backgroundColor = UIColor.lightGrayColor()
         
@@ -65,7 +62,8 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         row0.backgroundColor = UIColor.redColor()
         vLayout.addSubview(row0)
         
-/*        let col0Row1 = UIView(frame: CGRectMake(0, 0, 100, view.frame.height))
+/*      This is the row hidden behind the stats or control bar
+        let col0Row1 = UIView(frame: CGRectMake(0, 0, 100, view.frame.height))
         col0Row1.backgroundColor = UIColor.yellowColor()
         col0.addSubview(col0Row1)
 */
@@ -98,7 +96,8 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         
         let row2 = UIView(frame: CGRectMake(0, 0, view.frame.width, (view.frame.height - naviConH) / 6))
         row2.backgroundColor = UIColor.blueColor()
-        addFourHor(row2, img0: "K.png", img1: "W.png", img2: "X.png", img3: "delete.png", tag0: 0, tag1: 1, tag2: 2, tag3: 3)
+        // W and X are blank fillers for now - Had to move K to tag20, Swift didn't allow assigning tag = 0
+        addFourHor(row2, img0: "K.png", img1: "W.png", img2: "X.png", img3: "delete.png", tag0: 20, tag1: 1, tag2: 2, tag3: 3)
         vLayout.addSubview(row2)
 
 
@@ -132,7 +131,7 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         var hLayout = HorizontalFitLayout(height: viewName.frame.height)
         hLayout.backgroundColor = UIColor(red: 0.459, green: 0.486, blue: 0.459, alpha: 1)
         viewName.addSubview(hLayout)
-        // TOP LEFT Section Counter for now
+        // Column 1 of 4
 
         let view0 = UIButton(frame: CGRectMake(0, 0, view.frame.width / 4, hLayout.frame.height))
         let image0 = UIImage(named: img0)
@@ -142,7 +141,7 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         view0.addTarget(self, action: "seqTouched:", forControlEvents: UIControlEvents.TouchUpInside)
         hLayout.addSubview(view0)
         
-        // TOP CENTER Date Display
+        // Column 2 of 4
         let view1 = UIButton(frame: CGRectMake(0, 0, view.frame.width / 4, hLayout.frame.height))
         let image1 = UIImage(named: img1)
         view1.tag = tag1
@@ -151,7 +150,7 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         view1.addTarget(self, action: "seqTouched:", forControlEvents: UIControlEvents.TouchUpInside)
         hLayout.addSubview(view1)
         
-        // TOP RIGHT Card Count
+        // Column 3 of 4
         let view2 = UIButton(frame: CGRectMake(0, 0, view.frame.width / 4, hLayout.frame.height))
         let image2 = UIImage(named: img2)
         view2.tag = tag2
@@ -160,19 +159,28 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         view2.addTarget(self, action: "seqTouched:", forControlEvents: UIControlEvents.TouchUpInside)
         hLayout.addSubview(view2)
         
-        // TOP RIGHT Card Count
+        // Column 4 of 4
         let view3 = UIButton(frame: CGRectMake(0, 0, view.frame.width / 4, hLayout.frame.height))
         let image3 = UIImage(named: img3)
         view3.tag = tag3
         view3.setImage(image3, forState: .Normal)
         view3.contentMode = UIViewContentMode.ScaleToFill
+        
+        // if backspace tag, point to backspace function instead
+        if view3.tag == 3 {
+            
+            view3.addTarget(self, action: "backSpace:", forControlEvents: UIControlEvents.TouchUpInside)
+        
+            println("view2 tag: \(view2.tag) equals 3")
+        } else {
         view3.addTarget(self, action: "seqTouched:", forControlEvents: UIControlEvents.TouchUpInside)
+            println("view2 tag: \(view2.tag) is not 3")
+
+        }
         hLayout.addSubview(view3)
     }
 
-    var inSequence = String()
-    var firstButton: Int?
-    var buttonChar = String()
+    
     @IBAction func seqTouched(theButton: UIButton) {
         
         println("ButtonDump: \(theButton.tag)")
@@ -239,6 +247,24 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         
         oneButton.setImage(image0, forState: .Normal)
 
+    }
+    
+    @IBAction func backSpace(sender: AnyObject) {
+        
+        if inSequence != "" {
+            if firstChar != "" {
+                
+                inSequence.removeAtIndex(inSequence.endIndex.predecessor())
+                resetTheButton()
+                println("Remove1: \(inSequence)")
+                
+            } else {
+                inSequence.removeAtIndex(inSequence.endIndex.predecessor())
+                inSequence.removeAtIndex(inSequence.endIndex.predecessor())
+                println("Remove2: \(inSequence)")
+            }
+            }
+        
     }
     
     @IBAction func saveSequence(sender: AnyObject) {
