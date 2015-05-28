@@ -113,11 +113,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func seqTouched(sender: UIButton!) {
         var buttonTag:UIButton = sender
-        var alertView = UIAlertView();
-        alertView.addButtonWithTitle("\(buttonTag.tag)");
-        alertView.title = "title";
-        alertView.message = "\(idArray[buttonTag.tag])";
-        alertView.show();
+
+        let someText:String = "\(buttonTag.tag) \(idArray[buttonTag.tag])"
+        let google:NSURL = NSURL(string:"http://google.com/")!
+        
+        // let's add a String and an NSURL
+        let activityViewController = UIActivityViewController(
+            activityItems: [someText, google],
+            applicationActivities: nil)
+        self.navigationController!.presentViewController(activityViewController,
+            animated: true, 
+            completion: nil)
+        
     }
     
 
