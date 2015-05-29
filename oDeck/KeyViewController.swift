@@ -11,24 +11,26 @@ import Parse
 
 class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     var collectionView: UICollectionView?
-    let buttonTags = ["e", "W", "X", "I", "T", "J", "Q", "S", "7", "8", "9", "D", "4", "5", "6", "H", "A", "2", "3", "S", "K"]
+    let buttonTags = ["e", "W", "X", "I", "T", "J", "Q", "C", "7", "8", "9", "D", "4", "5", "6", "H", "A", "2", "3", "S", "K"]
     
-    // Had to use String instead of Character becuase Swift doesn't like empty character variables
+    // Used string because swift doesn't like empty Character
+    // Button Press Placeholder
     var firstChar = ""
-    // These store buttones pressed to complete a pair of buttons
     var secondChar = ""
-    // Stores our string that will be appended, modified and saved to database
+    
+    // the sequence - every 2 characters in the string equals a card
     var inSequence = String()
     
-    //    var firstButton: Int? // Storing button information - before required to use tags, can delete
-    
-    // Store first button ID so we can swap it back to normal image (not highlighted)
+    // Store the ID of the first button pressed (highlighting)
     var firstButtonId: Int!
-    // Logic below goes off of character instead of tag, should be able to consolidate to tags only
+    
+    // Store character of button pressed
     var buttonChar = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Function builds columns and rows (addSubView). Image updates needed for better landscape support
         addFiveVer()
     }
 
@@ -50,6 +52,8 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         self.title = "Cards: \(count(inSequence) / 2)"
     }
     
+    // Collection View for displaying selected cards
+    // divide by 2 because 2 characters in inSequence per card
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return count(inSequence) / 2
     }
@@ -60,18 +64,13 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.frame.size.width, height: cell.frame.size.height))
         imageView.contentMode = UIViewContentMode.TopLeft
         
-        
-        
-        var str:NSString = inSequence
-        var length = str.length
-        var totalLlength:Int =  length/2
-        var indexStart   = indexPath.row * (2);
-        //        var aRange1 = NSMakeRange(indexStart, 1)
-        //        var cardString1:NSString = str.substringWithRange(aRange1)
-        var aRange = NSMakeRange(indexStart, 2)
-        var cardString:NSString = str.substringWithRange(aRange)
-        
-        
+        // grab every 2 characters
+        let str:NSString = inSequence
+        let length = str.length
+        let totalLlength:Int =  length/2
+        let indexStart   = indexPath.row * (2)
+        let aRange = NSMakeRange(indexStart, 2)
+        let cardString:NSString = str.substringWithRange(aRange)
         let imageNameString = "c\(cardString).png"
         let front = UIImage(named: imageNameString)
         imageView.image = front
@@ -82,55 +81,36 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
     
 
     func addFiveVer() {
-        //master (vert) rows with addSubView of columns
-        //this can be pulled into reusable functions later
+
+        // master (vert) rows with addSubView of columns
+        // recode without layout functions and make reusable
         
-        view.backgroundColor = UIColor.lightGrayColor()
-        
-        var vLayout = VerticalLayout(width: view.frame.width)
-        vLayout.backgroundColor = UIColor.cyanColor()
+        let vLayout = VerticalLayout(width: view.frame.width)
         view.addSubview(vLayout)
         let naviConH = statusBarHeight() + navigationBarHeight()
         let row0 = UIView(frame: CGRectMake(0, 0, view.frame.width,  naviConH))
-        row0.backgroundColor = UIColor.redColor()
+        row0.backgroundColor = UIColor(red: 0.216, green: 0.231, blue: 0.216, alpha: 1)
         vLayout.addSubview(row0)
         
-/*      This is the row hidden behind the stats or control bar
-        let col0Row1 = UIView(frame: CGRectMake(0, 0, 100, view.frame.height))
-        col0Row1.backgroundColor = UIColor.yellowColor()
-        col0.addSubview(col0Row1)
-*/
-        
+        // Collection View Row
         let row1 = UIView(frame: CGRectMake(0, 0, view.frame.width, (view.frame.height - naviConH) / 6))
         row1.backgroundColor = UIColor.magentaColor()
-
-/*        let collectionTop = UICollectionView(frame: CGRectMake(0, 0, view.frame.width / 4, (view.frame.height - naviConH) / 6))
-        collectionTop.backgroundColor = UIColor.greenColor()
-        row1.addSubview(collectionTop)
-*/
-// 34
-
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-//        layout.sectionInset = UIEdgeInsets(top: 2, left: 9, bottom: 2, right: 9)
         layout.itemSize = CGSize(width: 55, height: (view.frame.height - naviConH) / 6)
         layout.scrollDirection = UICollectionViewScrollDirection.Horizontal
         layout.minimumLineSpacing = 1.0
         collectionView = UICollectionView(frame: CGRectMake(0, 0, view.frame.width, (view.frame.height - naviConH) / 6), collectionViewLayout: layout)
-
         collectionView!.dataSource = self
         collectionView!.delegate = self
-    
-        
         collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         collectionView!.backgroundColor = UIColor(red: 0.216, green: 0.231, blue: 0.216, alpha: 1)
-
-        
         row1.addSubview(collectionView!)
         vLayout.addSubview(row1)
         
         // Button Row 1 of 5
         let row2 = UIView(frame: CGRectMake(0, 0, view.frame.width, (view.frame.height - naviConH) / 6))
         row2.backgroundColor = UIColor.blueColor()
+        
         // W and X are blank fillers for now - Had to move K to tag20, Swift didn't allow assigning tag = 0
         addFourHor(row2, img0: "K.png", img1: "W.png", img2: "X.png", img3: "delete.png", tag0: 20, tag1: 1, tag2: 2, tag3: 3)
         vLayout.addSubview(row2)
@@ -138,7 +118,7 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         // Button Row 2 of 5
         let row3 = UIView(frame: CGRectMake(0, 0, view.frame.width, (view.frame.height - naviConH) / 6))
         row3.backgroundColor = UIColor.yellowColor()
-        addFourHor(row3, img0: "T.png", img1: "J.png", img2: "Q.png", img3: "S.png", tag0: 4, tag1: 5, tag2: 6, tag3: 7)
+        addFourHor(row3, img0: "T.png", img1: "J.png", img2: "Q.png", img3: "C.png", tag0: 4, tag1: 5, tag2: 6, tag3: 7)
         vLayout.addSubview(row3)
 
         // Button Row 3 of 5
@@ -158,10 +138,6 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         row6.backgroundColor = UIColor.cyanColor()
         addFourHor(row6, img0: "A.png", img1: "2.png", img2: "3.png", img3: "S.png", tag0: 16, tag1: 17, tag2: 18, tag3: 19)
         vLayout.addSubview(row6)
-
-        println("viewW: \(view.frame.width / 4)")
-        println("viewH: \((view.frame.height - naviConH) / 6)")
-        
     }
     
     func addFourHor(viewName: UIView, img0: String, img1: String, img2: String, img3: String, tag0: Int, tag1: Int, tag2: Int, tag3: Int) {
@@ -206,20 +182,17 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         // if backspace tag, point to backspace function instead
         if view3.tag == 3 {
             view3.addTarget(self, action: "backSpace:", forControlEvents: UIControlEvents.TouchUpInside)
-            println("view2 tag: \(view2.tag) equals 3")
         } else {
             view3.addTarget(self, action: "seqTouched:", forControlEvents: UIControlEvents.TouchUpInside)
-            println("view2 tag: \(view2.tag) is not 3")
         }
         
         hLayout.addSubview(view3)
+    
     }
 
     @IBAction func seqTouched(theButton: UIButton) {
-        
-        println("ButtonDump: \(theButton.tag)")
-        println("Button: \(buttonTags[theButton.tag])")
-        
+
+        // The button has been pressed
         buttonChar = buttonTags[theButton.tag]
         
         if buttonChar == "C" || buttonChar == "D" || buttonChar == "H" || buttonChar == "S" {
@@ -231,37 +204,43 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
                 
                 secondChar = buttonChar
                 inSequence.append(Character(secondChar))
-                println("Appended \(secondChar)")
-                println("seq: \(inSequence)")
                 firstChar = ""
                 secondChar = ""
+                
                 resetTheButton()
+               
                 updateTitle()
+                
                 bounceToEnd()
-                }
+                
+            }
         
         } else {
-            //if user changes their made and picks a different first char
+            
+            // Sometimes the user will change their mind.
             if firstChar != "" {
-                println("Reset Button and Del 1 from Array")
                 inSequence.removeAtIndex(inSequence.endIndex.predecessor())
                 resetTheButton()
             }
             
+            // Set first button variables and change to highlighted image ending with R.png
             firstChar = buttonChar
             firstButtonId = theButton.tag
             inSequence.append(Character(firstChar))
-            println("Append 1st Char: \(firstChar)")
-
             let oneButton = self.view.viewWithTag(theButton.tag) as! UIButton
             let image0 = UIImage(named: "\(buttonTags[theButton.tag])R.png")
             oneButton.setImage(image0, forState: .Normal)
+    
         }
-    println("SEQ: \(inSequence)")
+
     }
 
 
     func resetTheButton() {
+        
+        // It would be silly not to change back to the non-highlighted color
+        // Good thing we stored the previous button pressed in firstButtonId
+        
         let oneButton = self.view.viewWithTag(firstButtonId) as! UIButton
         let image0 = UIImage(named: "\(buttonTags[firstButtonId]).png")
         oneButton.setImage(image0, forState: .Normal)
@@ -270,54 +249,58 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
     }
     
     func bounceToEnd() {
-        // Reload collection view then Bounce to the end
+        
+        // Reload Collection View - Bounce it to the last card.
+        
         collectionView?.reloadData()
+
         if count(inSequence) % 2 == 0 && count(inSequence) > 1 {
             
             var item = self.collectionView(self.collectionView!, numberOfItemsInSection: 0) - 1
             var lastItemIndex = NSIndexPath(forItem: item, inSection: 0)
             self.collectionView?.scrollToItemAtIndexPath(lastItemIndex, atScrollPosition: UICollectionViewScrollPosition.Right, animated: true)
-            println("Bounce TO End")
+        
         }
+        
     }
     
     @IBAction func backSpace(sender: AnyObject) {
         
+        // we have to consider if the user is hitting backspace after only touching a 'first button'
+        // the first button is already appended to the inSequence String, so lets remove it
+        
         if inSequence != "" {
+            
             if firstChar != "" {
                 
                 inSequence.removeAtIndex(inSequence.endIndex.predecessor())
                 resetTheButton()
-                println("Remove1: \(inSequence)")
                 
             } else {
                 
                 inSequence.removeAtIndex(inSequence.endIndex.predecessor())
                 inSequence.removeAtIndex(inSequence.endIndex.predecessor())
-                println("Remove2: \(inSequence)")
             
             }
             
         }
+
         updateTitle()
+        
         bounceToEnd()
+    
     }
     
     @IBAction func saveSequence(sender: AnyObject) {
         
-        //        noRefresh = false
+        //        noRefresh = false  // need to add a noRefresh boolean. No need to always refresh
         let testObject = PFObject(className: "oDeck")
-        let stringHolder = String(stringInterpolationSegment: inSequence)
-        
-        testObject["Sequence"] = stringHolder.stringByReplacingOccurrencesOfString(" ", withString: "")
+        testObject["Sequence"] = inSequence
         println("Saving inSequence: \(inSequence)")
-        
         deviceId = UIDevice.currentDevice().identifierForVendor.UUIDString
         testObject["Device"] = deviceId
         testObject.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
-            
             println("Object has been saved.")
-            
             var objectID = testObject.objectId
             println("Object iD is: \(objectID)")
             
