@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		498363701B14032C00FA8FB4 /* ComposeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4983636F1B14032C00FA8FB4 /* ComposeCollectionViewCell.swift */; };
+		49ACC7BC1B2551F300C58266 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 49ACC7BB1B2551F300C58266 /* README.md */; };
 		49B01B991B14189A00CFF822 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B01B981B14189A00CFF822 /* KeyViewController.swift */; };
 		49B301401B20295A006DB118 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B3013F1B20295A006DB118 /* ParseUI.framework */; };
 		49B301421B20297B006DB118 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B301411B20297B006DB118 /* Parse.framework */; };
@@ -50,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		4983636F1B14032C00FA8FB4 /* ComposeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeCollectionViewCell.swift; sourceTree = "<group>"; };
+		49ACC7BB1B2551F300C58266 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		49B01B981B14189A00CFF822 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
 		49B3013F1B20295A006DB118 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ParseUI.framework; path = Framework/ParseUI.framework; sourceTree = "<group>"; };
 		49B301411B20297B006DB118 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Framework/Parse.framework; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 		49F6FD111B0EBEE3009F5070 = {
 			isa = PBXGroup;
 			children = (
+				49ACC7BB1B2551F300C58266 /* README.md */,
 				49F6FD901B0EFF3E009F5070 /* Framework */,
 				49F6FD1C1B0EBEE3009F5070 /* oDeck */,
 				49F6FD321B0EBEE3009F5070 /* oDeckTests */,
@@ -312,6 +315,7 @@
 				49F6FD401B0EBF1F009F5070 /* CustomTableViewCell.swift in Sources */,
 				49F6FD221B0EBEE3009F5070 /* ViewController.swift in Sources */,
 				49F6FD201B0EBEE3009F5070 /* AppDelegate.swift in Sources */,
+				49ACC7BC1B2551F300C58266 /* README.md in Sources */,
 				49F6FD421B0EBF49009F5070 /* CustomCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

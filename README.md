@@ -7,3 +7,5 @@ Chris Aguilar webmaster@totalnonsense.com for the playing card vector images
               http://code.google.com/p/vectorized-playing-cards/
 
 @Shan on StackOverflow for helping me solve my UICollectionView datasource issues.
+
+![Snapshot](/blob/master/oDeck0607.gif)
