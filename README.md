@@ -8,4 +8,4 @@ Chris Aguilar webmaster@totalnonsense.com for the playing card vector images
 
 @Shan on StackOverflow for helping me solve my UICollectionView datasource issues.
 
-![Snapshot](/blob/master/oDeck0607.gif)
+![Snapshot](/oDeck0607.gif)
