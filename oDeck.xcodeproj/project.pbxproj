@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		498363701B14032C00FA8FB4 /* ComposeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4983636F1B14032C00FA8FB4 /* ComposeCollectionViewCell.swift */; };
 		49B01B991B14189A00CFF822 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B01B981B14189A00CFF822 /* KeyViewController.swift */; };
+		49B301401B20295A006DB118 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B3013F1B20295A006DB118 /* ParseUI.framework */; };
+		49B301421B20297B006DB118 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B301411B20297B006DB118 /* Parse.framework */; };
 		49F6FD201B0EBEE3009F5070 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6FD1F1B0EBEE3009F5070 /* AppDelegate.swift */; };
 		49F6FD221B0EBEE3009F5070 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6FD211B0EBEE3009F5070 /* ViewController.swift */; };
 		49F6FD251B0EBEE3009F5070 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49F6FD231B0EBEE3009F5070 /* Main.storyboard */; };
@@ -49,6 +51,8 @@
 /* Begin PBXFileReference section */
 		4983636F1B14032C00FA8FB4 /* ComposeCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeCollectionViewCell.swift; sourceTree = "<group>"; };
 		49B01B981B14189A00CFF822 /* KeyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyViewController.swift; sourceTree = "<group>"; };
+		49B3013F1B20295A006DB118 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ParseUI.framework; path = Framework/ParseUI.framework; sourceTree = "<group>"; };
+		49B301411B20297B006DB118 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Framework/Parse.framework; sourceTree = "<group>"; };
 		49F6FD1A1B0EBEE3009F5070 /* oDeck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = oDeck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49F6FD1E1B0EBEE3009F5070 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		49F6FD1F1B0EBEE3009F5070 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,7 +91,9 @@
 			files = (
 				49F6FD8F1B0EFF1C009F5070 /* libsqlite3.dylib in Frameworks */,
 				49F6FD8D1B0EFF0B009F5070 /* libz.dylib in Frameworks */,
+				49B301401B20295A006DB118 /* ParseUI.framework in Frameworks */,
 				49F6FD8B1B0EFF00009F5070 /* SystemConfiguration.framework in Frameworks */,
+				49B301421B20297B006DB118 /* Parse.framework in Frameworks */,
 				49F6FD891B0EFEF5009F5070 /* StoreKit.framework in Frameworks */,
 				49F6FD871B0EFEEA009F5070 /* Security.framework in Frameworks */,
 				49F6FD851B0EFEE0009F5070 /* QuartzCore.framework in Frameworks */,
@@ -180,9 +186,10 @@
 			isa = PBXGroup;
 			children = (
 				49F6FD751B0EFE3D009F5070 /* Bolts.framework */,
-				49F6FD761B0EFE3D009F5070 /* Parse.framework */,
 				49F6FD8E1B0EFF1C009F5070 /* libsqlite3.dylib */,
+				49B301411B20297B006DB118 /* Parse.framework */,
 				49F6FD8C1B0EFF0B009F5070 /* libz.dylib */,
+				49B3013F1B20295A006DB118 /* ParseUI.framework */,
 				49F6FD8A1B0EFF00009F5070 /* SystemConfiguration.framework */,
 				49F6FD881B0EFEF5009F5070 /* StoreKit.framework */,
 				49F6FD861B0EFEEA009F5070 /* Security.framework */,
@@ -435,6 +442,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Framework",
+					"/Users/Andrew/Downloads/parse-library-1.7.4",
 				);
 				INFOPLIST_FILE = oDeck/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -449,6 +457,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Framework",
+					"/Users/Andrew/Downloads/parse-library-1.7.4",
 				);
 				INFOPLIST_FILE = oDeck/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

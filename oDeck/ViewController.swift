@@ -8,12 +8,13 @@
 
 import UIKit
 import Parse
+import ParseUI
 
 var deviceId: String?
 var sequenceArray = [String]()
 var dateArray = [String]()
 var idArray = [String]()
-
+// add bounce to collection view, if pull last collection view, it will bounce to the other end
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -21,6 +22,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     var timeLineData:NSMutableArray = NSMutableArray()
     var cardCountArray:[Int] = []
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
