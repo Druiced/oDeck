@@ -129,8 +129,6 @@
 		49F6FD111B0EBEE3009F5070 = {
 			isa = PBXGroup;
 			children = (
-				497A53B71B2639ED008A9178 /* Accounts.framework */,
-				497A53B51B2639D5008A9178 /* Social.framework */,
 				49F6FD901B0EFF3E009F5070 /* Framework */,
 				49F6FD1C1B0EBEE3009F5070 /* oDeck */,
 				49F6FD321B0EBEE3009F5070 /* oDeckTests */,
@@ -199,6 +197,8 @@
 			isa = PBXGroup;
 			children = (
 				49F6FD8E1B0EFF1C009F5070 /* libsqlite3.dylib */,
+				497A53B71B2639ED008A9178 /* Accounts.framework */,
+				497A53B51B2639D5008A9178 /* Social.framework */,
 				497A53AF1B2633F0008A9178 /* Bolts.framework */,
 				497A53B01B2633F0008A9178 /* ParseUI.framework */,
 				497A53B11B2633F0008A9178 /* Parse.framework */,

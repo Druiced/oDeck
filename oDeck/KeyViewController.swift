@@ -33,11 +33,27 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
     // Confused User - When suit is tapped before rank more than once, pop-up a tip
     var confusedUser: Int = 0
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Function builds columns and rows (addSubView). Image updates needed for better landscape support
         // This can be recreated cleaner, but the 'reactive' design works!
+        addFiveVer()
+        
+        // Call orientationChanged function if user changes orientation
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "orientationChanged", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        
+    }
+    
+    func orientationChanged() {
+    
+
+        // clear all previously added subviews before reloading them
+        // this clears up the memory .. fast
+        self.view.subviews.map({ $0.removeFromSuperview() })
+
+        // reload the table for new orientation
         addFiveVer()
         
     }
@@ -93,7 +109,7 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
     func addFiveVer() {
 
         // master (vert) rows with addSubView of columns
-        // recode without layout functions and make reusable
+        // re-code without layout functions and make reusable
         
         let vLayout = VerticalLayout(width: view.frame.width)
         view.addSubview(vLayout)
@@ -209,7 +225,7 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
             if firstChar == "" {
                 
                 confusedUser++
-                if confusedUser > 1 {
+                if confusedUser == 2 {
                     
                     var alert = UIAlertController(title: "Try tapping 9, then Diamond", message: "Use < to delete a card", preferredStyle: UIAlertControllerStyle.Alert)
                     alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler:{ (ACTION :UIAlertAction!) in
@@ -232,6 +248,21 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
                 updateTitle()
                 
                 bounceToEnd()
+                
+                if (count(inSequence) / 2) == 156 {
+
+                    
+                    var alert = UIAlertController(title: "Max Sequence Length", message: "Version 1 - 156 card limit", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler:{ (ACTION :UIAlertAction!) in
+
+                        // Auto save sequence if 200 is hit after user presses OK
+                        self.saveSequence(self)
+
+                    }))
+                    
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    
+                }
                 
             }
         
@@ -313,12 +344,19 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
     }
     
     @IBAction func saveSequence(sender: AnyObject) {
+        
+        // Set bool so main view will reload with new data
+        noLoadData = false
+        
         let parseObject = PFObject(className: "oDeck")
         parseObject["Sequence"] = inSequence
         
         // Saving Sequence
         
         parseObject["Username"] = PFUser.currentUser()
+        
+        parseObject.ACL = PFACL(user: PFUser.currentUser()!)
+        parseObject.ACL?.setPublicReadAccess(true)
         parseObject.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
             
             // Object has been saved

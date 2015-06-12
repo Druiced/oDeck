@@ -14,6 +14,18 @@ var sequenceArray = [String]()
 var dateArray = [String]()
 var idArray = [String]()
 
+// prevents loadData function from accessing Parse before a
+// new sequence has been added
+var noLoadData: Bool = false
+
+// Overview in order
+// Global Variables
+// View Load Functions
+// Parse.com Login and Signup Controllers
+// Table View with Sharing Feature
+// Load Data from Parse Function
+// Function for Vertical and Horizontal Spacing
+
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
@@ -22,6 +34,18 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        // Call orientationChanged function if user changes orientation
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "orientationChanged", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        
+    }
+    
+    func orientationChanged() {
+        
+        // reload the table for new orientation
+        self.tableView.reloadData()
+    
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -41,6 +65,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
         } else {
 
+            self.title = "Connected"
+            
+            noLoadData = false
 
             loadData()
 
@@ -71,6 +98,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     func logInViewController(logInController: PFLogInViewController, didLogInUser user: PFUser) {
         
+        // user login success
         self.dismissViewControllerAnimated(true, completion: nil)
  
     }
@@ -139,6 +167,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         PFUser.logOut()
         timeLineData.removeAllObjects()
         sequenceArray.removeAll()
+        self.title = "Please Login"
         self.tableView.reloadData()
         self.viewDidAppear(true)
     
@@ -159,6 +188,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
         var cell:CustomTableViewCell? = tableView.dequeueReusableCellWithIdentifier("CELL") as? CustomTableViewCell;
+
         if(cell == nil)
         {
             cell = CustomTableViewCell.CreateCustomCell()
@@ -166,6 +196,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         cell?.stringForCell = sequenceArray[indexPath.section]
         cell?.foldersCollectionView.reloadData()
         cell?.clipsToBounds = true
+        
+        
         return cell!;
     }
     
@@ -180,17 +212,12 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         var length:Int = str.length
         let cellCardCount = length / 2
         var hLayout = HorizontalFitLayout(height: 20)
-        hLayout.backgroundColor = UIColor.cyanColor()
         headerView.addSubview(hLayout)
 
         // TOP LEFT
         let view1 = UIButton(frame: CGRectMake(0, 0, 100, 20))
         view1.backgroundColor = UIColor(red: 0.322, green: 0.459, blue: 0.702, alpha: 1)
-//        view1.shadowColor = UIColor.whiteColor()
-//        view1.textColor = UIColor.blueColor()
-//        view1.textAlignment = .Center
         view1.setTitleColor(UIColor.orangeColor(), forState: .Normal)
-        // view1.setTitle("\(idArray[section])", forState: .Normal)
         view1.setTitle("Share", forState: .Normal)
         view1.titleLabel?.textAlignment = .Left
         view1.tag = section
@@ -212,6 +239,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         view3.text = ("\(cellCardCount) Cards")
         view3.textAlignment = .Right
         hLayout.addSubview(view3)
+
         return headerView
     }
     
@@ -220,7 +248,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func seqTouched(sender: UIButton!) {
-        // SHARE FEATURE COMING SOON
+        
+        // Sharing Feature
         
         var sharedString:String = ""
         
@@ -262,55 +291,63 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     @IBAction func loadData() {
         
         // Load user database from Parse.com
-        
-        timeLineData.removeAllObjects()
-        sequenceArray.removeAll()
-        var findTimelineData = PFQuery(className:"oDeck")
-        findTimelineData.whereKey("Username", equalTo: PFUser.currentUser()!)
-        
-        findTimelineData.orderByDescending("updatedAt")
-        findTimelineData.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]?, error: NSError?) -> Void in
+        if noLoadData == false {
             
-            if error == nil {
+            
+            timeLineData.removeAllObjects()
+            sequenceArray.removeAll()
+            var findTimelineData = PFQuery(className:"oDeck")
+            findTimelineData.whereKey("Username", equalTo: PFUser.currentUser()!)
+            
+            findTimelineData.orderByDescending("updatedAt")
+            findTimelineData.findObjectsInBackgroundWithBlock {
+                (objects: [AnyObject]?, error: NSError?) -> Void in
+                
+                if error == nil {
 
-                // Successfully retrieved objects
-                if let objects = objects as? [PFObject] {
-                    for object in objects {
-                        self.timeLineData.addObject(object)
+                    // Successfully retrieved objects
+                    if let objects = objects as? [PFObject] {
+                        for object in objects {
+                            self.timeLineData.addObject(object)
 
-                    }
-                    
-                    for (index, item) in enumerate(self.timeLineData) {
-                        let deck:PFObject = self.timeLineData.objectAtIndex(index) as! PFObject
-                        let seq = deck.objectForKey("Sequence") as! String
-                        sequenceArray.insert(seq, atIndex: index)
+                        }
                         
+                        for (index, item) in enumerate(self.timeLineData) {
+                            let deck:PFObject = self.timeLineData.objectAtIndex(index) as! PFObject
+                            let seq = deck.objectForKey("Sequence") as! String
+                            sequenceArray.insert(seq, atIndex: index)
+                            
 
-                        // Set the date formatting - seconds seems fitting if logging multiple hands
-                        var dateFormatter = NSDateFormatter()
-                        dateFormatter.dateFormat = "MM/dd hh:mm:ss"
-                        dateArray.insert(dateFormatter.stringFromDate(deck.updatedAt!), atIndex: index)
-                        let sId = deck.objectId
-                        idArray.insert(sId!, atIndex: index)
-                   
+                            // Set the date formatting - seconds seems fitting if logging multiple hands
+                            var dateFormatter = NSDateFormatter()
+                            dateFormatter.dateFormat = "MM/dd hh:mm:ss"
+                            dateArray.insert(dateFormatter.stringFromDate(deck.updatedAt!), atIndex: index)
+                            let sId = deck.objectId
+                            idArray.insert(sId!, atIndex: index)
+                       
+                        }
+                        
+                        self.tableView.reloadData()
+                        
+                        // update title with # of sequences
+                        self.title = "\(self.timeLineData.count)"
+                        
+                        // jump tableview to top
+                        self.tableView.scrollRectToVisible(CGRectMake(0, 0, 1, 1), animated: true)
+                        
+                        noLoadData = true
+                    
                     }
-                    
-                    self.tableView.reloadData()
-                    
-                    // update title with # of sequences
-                    self.title = "\(self.timeLineData.count)"
+                
+                } else {
                 
                 }
-            
-            } else {
             
             }
         
         }
-    
-    }
 
+    }
 }
 
 class HorizontalLayout: UIView {
