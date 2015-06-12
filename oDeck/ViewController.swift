@@ -3,7 +3,7 @@
 //  oDeck
 //
 //  Created by Andrew on 5/21/15.
-//  Copyright (c) 2015 druiced. All rights reserved.
+//  Copyright (c) 2015 Andrew Douwes. All rights reserved.
 //
 
 import UIKit
@@ -80,9 +80,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         var alert = UIAlertController(title: "oDeck Database Login", message: "Invalid Credentials - Login Failed", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler:{ (ACTION :UIAlertAction!) in
         }))
-        logInController.presentViewController(alert, animated: true, completion: nil)
-        println("failed to login.")
     
+        // failed to login
+        logInController.presentViewController(alert, animated: true, completion: nil)
+        
     }
     
     func signUpViewController(signUpController: PFSignUpViewController, shouldBeginSignUp info: [NSObject : AnyObject]) -> Bool {
@@ -93,16 +94,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let parseEmail = info["email"] as? String
         
         if count(parsePass!.utf16) <= 7 {
-            println("password must be at least 8 char")
+            var alert = UIAlertController(title: "oDeck Quick Signup", message: "Password must be at least 8 long", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler:{ (ACTION :UIAlertAction!) in
+            }))
+            
+            signUpController.presentViewController(alert, animated: true, completion: nil)
+        
         }
         
         if parseEmail == "" {
-            println("Email field must be completed")
+            var alert = UIAlertController(title: "oDeck Quick Signup", message: "E-mail used to retrieve password", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler:{ (ACTION :UIAlertAction!) in
+            }))
+            
+            signUpController.presentViewController(alert, animated: true, completion: nil)
             return false
         }
-        
-        println("login: \(parseLogin) pass: \(parsePass) email: \(parseEmail)")
-
         
         if let password = info["password"] as? String {
             
@@ -121,8 +128,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func signUpViewController(signUpController: PFSignUpViewController, didFailToSignUpWithError error: NSError?) {
-    
-        println("failed to sign up..")
+       
+        // failed to sign up
     
     }
     
@@ -184,7 +191,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 //        view1.textAlignment = .Center
         view1.setTitleColor(UIColor.orangeColor(), forState: .Normal)
         // view1.setTitle("\(idArray[section])", forState: .Normal)
-        view1.setTitle("Select", forState: .Normal)
+        view1.setTitle("Share", forState: .Normal)
         view1.titleLabel?.textAlignment = .Left
         view1.tag = section
         view1.addTarget(self, action: "seqTouched:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -290,6 +297,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                     }
                     
                     self.tableView.reloadData()
+                    
+                    // update title with # of sequences
+                    self.title = "\(self.timeLineData.count)"
                 
                 }
             

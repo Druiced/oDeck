@@ -3,7 +3,7 @@
 //  oDeck
 //
 //  Created by Andrew on 6/8/15.
-//  Copyright (c) 2015 druiced. All rights reserved.
+//  Copyright (c) 2015 Andrew Douwes. All rights reserved.
 //
 
 import UIKit
@@ -13,15 +13,12 @@ class customSignUpViewController: PFSignUpViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
-        
+        // Customize PFSignUpView color and logo
         self.view.backgroundColor = UIColor.darkGrayColor()
-        
         let logoView = UIImageView(image: UIImage(named: "oDeckLrg.png"))
-        //self.logoView.contentMode = UIViewContentMode.ScaleToFill
-        
-        self.signUpView!.logo = logoView // 'logo' can be any UIView
+        self.signUpView!.logo = logoView
         self.signUpView!.logo?.contentMode = UIViewContentMode.ScaleAspectFill
+    
     }
     
     override func didReceiveMemoryWarning() {

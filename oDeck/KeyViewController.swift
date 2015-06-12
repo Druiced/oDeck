@@ -3,7 +3,7 @@
 //  oDeck
 //
 //  Created by Andrew on 5/25/15.
-//  Copyright (c) 2015 druiced. All rights reserved.
+//  Copyright (c) 2015 Andrew Douwes. All rights reserved.
 //
 
 import UIKit
@@ -29,6 +29,9 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
     
     // Store character of button pressed
     var buttonChar = String()
+    
+    // Confused User - When suit is tapped before rank more than once, pop-up a tip
+    var confusedUser: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -205,7 +208,17 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         if buttonChar == "C" || buttonChar == "D" || buttonChar == "H" || buttonChar == "S" {
             if firstChar == "" {
                 
-                println("Select Card Value First")
+                confusedUser++
+                if confusedUser > 1 {
+                    
+                    var alert = UIAlertController(title: "Try tapping 9, then Diamond", message: "Use < to delete a card", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler:{ (ACTION :UIAlertAction!) in
+                    }))
+                    
+                    self.presentViewController(alert, animated: true, completion: nil)
+                
+                }
+
                 
             } else {
                 
@@ -302,13 +315,15 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
     @IBAction func saveSequence(sender: AnyObject) {
         let parseObject = PFObject(className: "oDeck")
         parseObject["Sequence"] = inSequence
-        println("Saving inSequence: \(inSequence)")
+        
+        // Saving Sequence
         
         parseObject["Username"] = PFUser.currentUser()
         parseObject.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
-            println("Object has been saved.")
+            
+            // Object has been saved
+            
             var objectID = parseObject.objectId
-            println("Object iD is: \(objectID)")
             
         }
         
