@@ -10,45 +10,134 @@ import UIKit
 import Parse
 import ParseUI
 
-var deviceId: String?
 var sequenceArray = [String]()
 var dateArray = [String]()
 var idArray = [String]()
-// add bounce to collection view, if pull last collection view, it will bounce to the other end
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     var timeLineData:NSMutableArray = NSMutableArray()
     var cardCountArray:[Int] = []
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        deviceId = UIDevice.currentDevice().identifierForVendor.UUIDString
     }
     
     override func viewDidAppear(animated: Bool) {
-        //   if noRefresh == false {
-        loadData()
-        //noRefresh = true
-        //}
+        
+        // Parse user signup or login
+        if (PFUser.currentUser() == nil) {
+            
+            var logInViewController = customLogInViewController()
+            logInViewController.delegate = self
+            
+            var signUpViewController = customSignUpViewController()
+            signUpViewController.delegate = self
+
+            logInViewController.signUpController = signUpViewController
+            
+            self.presentViewController(logInViewController, animated: true, completion: nil)
+            
+        } else {
+
+
+            loadData()
+
+        }
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    // Start ParseUI
+    func logInViewController(logInController: PFLogInViewController, shouldBeginLogInWithUsername username: String, password: String) -> Bool {
+        
+        if (!username.isEmpty || !password.isEmpty) {
+            
+            return true
+            
+        } else {
+            
+            return false
+        
+        }
+        
+    }
+    
+    func logInViewController(logInController: PFLogInViewController, didLogInUser user: PFUser) {
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+ 
+    }
+ 
+    func logInViewController(logInController: PFLogInViewController, didFailToLogInWithError error: NSError?) {
+    
+        var alert = UIAlertController(title: "oDeck Database Login", message: "Invalid Credentials - Login Failed", preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.Default, handler:{ (ACTION :UIAlertAction!) in
+        }))
+        logInController.presentViewController(alert, animated: true, completion: nil)
+        println("failed to login.")
+    
+    }
+    
+    func signUpViewController(signUpController: PFSignUpViewController, shouldBeginSignUp info: [NSObject : AnyObject]) -> Bool {
+    
+
+        let parseLogin = info["username"] as? String
+        let parsePass = info["password"] as? String
+        let parseEmail = info["email"] as? String
+        
+        if count(parsePass!.utf16) <= 7 {
+            println("password must be at least 8 char")
+        }
+        
+        if parseEmail == "" {
+            println("Email field must be completed")
+            return false
+        }
+        
+        println("login: \(parseLogin) pass: \(parsePass) email: \(parseEmail)")
+
+        
+        if let password = info["password"] as? String {
+            
+            return count(password.utf16) >= 8
+            
+        }
+        
+        return false
+    
+    }
+    
+    func signUpViewController(signUpController: PFSignUpViewController, didSignUpUser user: PFUser) {
+    
+        self.dismissViewControllerAnimated(true, completion: nil)
+    
+    }
+    
+    func signUpViewController(signUpController: PFSignUpViewController, didFailToSignUpWithError error: NSError?) {
+    
+        println("failed to sign up..")
+    
+    }
+    
+    // Parse Sign Off
+    @IBAction func signOff(sender: AnyObject) {
+        
+        PFUser.logOut()
+        timeLineData.removeAllObjects()
+        sequenceArray.removeAll()
+        self.tableView.reloadData()
+        self.viewDidAppear(true)
+    
+    }
+
+    // End ParseUI
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
@@ -87,14 +176,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         hLayout.backgroundColor = UIColor.cyanColor()
         headerView.addSubview(hLayout)
 
-        // TOP LEFT Section Counter for now
-        let view1 = UIButton(frame: CGRectMake(0, 0, 120, 20))
+        // TOP LEFT
+        let view1 = UIButton(frame: CGRectMake(0, 0, 100, 20))
         view1.backgroundColor = UIColor(red: 0.322, green: 0.459, blue: 0.702, alpha: 1)
 //        view1.shadowColor = UIColor.whiteColor()
 //        view1.textColor = UIColor.blueColor()
 //        view1.textAlignment = .Center
-        view1.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        view1.setTitle("\(idArray[section])", forState: .Normal)
+        view1.setTitleColor(UIColor.orangeColor(), forState: .Normal)
+        // view1.setTitle("\(idArray[section])", forState: .Normal)
+        view1.setTitle("Select", forState: .Normal)
         view1.titleLabel?.textAlignment = .Left
         view1.tag = section
         view1.addTarget(self, action: "seqTouched:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -123,63 +213,103 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func seqTouched(sender: UIButton!) {
-        var buttonTag:UIButton = sender
-
-        let someText:String = "\(buttonTag.tag) \(idArray[buttonTag.tag])"
-        let google:NSURL = NSURL(string:"http://google.com/")!
+        // SHARE FEATURE COMING SOON
         
-        // let's add a String and an NSURL
+        var sharedString:String = ""
+        
+        var buttonTag:UIButton = sender
+        var str:NSString = sequenceArray[buttonTag.tag]
+        var length = str.length
+        var totalLlength:Int =  length / 2
+        println("total llength: \(totalLlength)")
+        
+        for index in 0...totalLlength - 1 {
+            println("\(index)")
+        
+            var indexStart = index * (2);
+            var aRange = NSMakeRange(indexStart, 2)
+            var cardString:NSString = str.substringWithRange(aRange)
+          
+            println("\(cardString)")
+            
+            sharedString += "[\(cardString)]"
+            
+            println("\(sharedString)")
+            
+        }
+        
+        // Share Feature - Many updates to come
+        
+        let someText:String = "I saved these cards on oDeck for the iPhone:"
+        let theString:String = "\(sharedString)"
+        let odeckurl:NSURL = NSURL(string:"http://odeck.net")!
         let activityViewController = UIActivityViewController(
-            activityItems: [someText, google],
+            activityItems: [someText, theString ,odeckurl],
             applicationActivities: nil)
         self.navigationController!.presentViewController(activityViewController,
-            animated: true, 
+            animated: true,
             completion: nil)
-        
+    
     }
     
-
     @IBAction func loadData() {
-        // Load Parse.com data
+        
+        // Load user database from Parse.com
+        
         timeLineData.removeAllObjects()
         sequenceArray.removeAll()
         var findTimelineData = PFQuery(className:"oDeck")
-        findTimelineData.whereKey("Device", equalTo:deviceId!)
+        findTimelineData.whereKey("Username", equalTo: PFUser.currentUser()!)
+        
         findTimelineData.orderByDescending("updatedAt")
         findTimelineData.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]?, error: NSError?) -> Void in
             
             if error == nil {
-                // The find succeeded.
-                println("Successfully retrieved \(objects!.count) objects.")
-                // Do something with the found objects
+
+                // Successfully retrieved objects
                 if let objects = objects as? [PFObject] {
                     for object in objects {
-                        println(object.objectId)
                         self.timeLineData.addObject(object)
-                        println("\(self.timeLineData.count)")
+
                     }
                     
                     for (index, item) in enumerate(self.timeLineData) {
                         let deck:PFObject = self.timeLineData.objectAtIndex(index) as! PFObject
                         let seq = deck.objectForKey("Sequence") as! String
                         sequenceArray.insert(seq, atIndex: index)
+                        
+
+                        // Set the date formatting - seconds seems fitting if logging multiple hands
                         var dateFormatter = NSDateFormatter()
                         dateFormatter.dateFormat = "MM/dd hh:mm:ss"
                         dateArray.insert(dateFormatter.stringFromDate(deck.updatedAt!), atIndex: index)
                         let sId = deck.objectId
-                        println("sID: \(sId)")
                         idArray.insert(sId!, atIndex: index)
+                   
                     }
+                    
                     self.tableView.reloadData()
+                
                 }
+            
             } else {
+            
             }
+        
         }
+    
     }
+
 }
 
 class HorizontalLayout: UIView {
+    
+    // Came accross this class in a blog I read
+    // This helps auto-align viritical or horizontal objects
+    // While making this project I have come up with a different
+    // way I will handle this in the future
+    
     var xOffsets: [CGFloat] = []
     init(height: CGFloat) {
         super.init(frame: CGRectMake(0, 0, 0, height))

@@ -17,24 +17,33 @@
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="launchIcon240" translatesAutoresizingMaskIntoConstraints="NO" id="brZ-TM-zIq">
-                    <rect key="frame" x="67" y="290" width="240" height="240"/>
-                </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="oDeck" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="kId-c2-rCX">
                     <rect key="frame" x="19" y="159" width="336" height="74"/>
                     <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="64"/>
                     <color key="textColor" red="0.47450980392156861" green="0.67450980392156867" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" image="oDeckLogo" translatesAutoresizingMaskIntoConstraints="NO" id="brZ-TM-zIq">
+                    <rect key="frame" x="67" y="287" width="240" height="240"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="240" id="63u-wp-8eU"/>
+                        <constraint firstAttribute="height" constant="240" id="9h4-iJ-bVu"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="0.29803922772407532" green="0.29803922772407532" blue="0.29803922772407532" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstAttribute="centerY" secondItem="brZ-TM-zIq" secondAttribute="centerY" constant="-73.5" id="1LM-oi-qGl"/>
                 <constraint firstItem="kId-c2-rCX" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="bottom" multiplier="1/3" constant="-26.333333333333314" id="5cJ-9S-tgC"/>
+                <constraint firstAttribute="trailing" secondItem="brZ-TM-zIq" secondAttribute="trailing" constant="68" id="9dx-Al-nq8"/>
+                <constraint firstItem="brZ-TM-zIq" firstAttribute="top" secondItem="kId-c2-rCX" secondAttribute="bottom" constant="54" id="IsC-L1-Sts"/>
+                <constraint firstAttribute="centerY" secondItem="brZ-TM-zIq" secondAttribute="centerY" constant="-73.5" id="Jyk-JP-MVg"/>
                 <constraint firstAttribute="centerX" secondItem="kId-c2-rCX" secondAttribute="centerX" id="Koa-jz-hwk"/>
                 <constraint firstAttribute="bottom" secondItem="8ie-xW-0ye" secondAttribute="bottom" constant="20" id="Kzo-t9-V3l"/>
                 <constraint firstItem="8ie-xW-0ye" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="MfP-vx-nX0"/>
                 <constraint firstAttribute="centerX" secondItem="8ie-xW-0ye" secondAttribute="centerX" id="ZEH-qu-HZ9"/>
                 <constraint firstItem="kId-c2-rCX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="19" id="fvb-Df-36g"/>
+                <constraint firstAttribute="centerX" secondItem="brZ-TM-zIq" secondAttribute="centerX" constant="0.5" id="gqe-6U-KFR"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
@@ -42,6 +51,6 @@
         </view>
     </objects>
     <resources>
-        <image name="launchIcon240" width="240" height="240"/>
+        <image name="oDeckLogo" width="100" height="100"/>
     </resources>
 </document>

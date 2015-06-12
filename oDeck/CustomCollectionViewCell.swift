@@ -10,8 +10,11 @@ import UIKit
 
 class CustomCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var aLabel: UILabel!  //to show the card number
-    @IBOutlet weak var imageView: UIImageView! //imageview i am setting it's background color
+    // Card count number
+    @IBOutlet weak var aLabel: UILabel!
+    
+    // The card image
+    @IBOutlet weak var imageView: UIImageView!
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -25,4 +28,5 @@ class CustomCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
                 
     }
+
 }

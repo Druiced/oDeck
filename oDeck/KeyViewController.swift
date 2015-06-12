@@ -11,17 +11,20 @@ import Parse
 
 class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     var collectionView: UICollectionView?
-    let buttonTags = ["e", "W", "X", "I", "T", "J", "Q", "C", "7", "8", "9", "D", "4", "5", "6", "H", "A", "2", "3", "S", "K"]
+    
+    // Set letter for image tags 1 - 20 (fyi, you can't set button tag to 0, using "nil" as filler)
+    let buttonTags = ["nil", "W", "X", "I", "T", "J", "Q", "C", "7", "8", "9", "D", "4", "5", "6", "H", "A", "2", "3", "S", "K"]
     
     // Used string because swift doesn't like empty Character
-    // Button Press Placeholder
+    // Button Pressed Placeholder
     var firstChar = ""
     var secondChar = ""
     
-    // the sequence - every 2 characters in the string equals a card
+    // The Sequence Model - every 2 characters in the string equals a card.
+    // Each card image filename are 2 characters + .png
     var inSequence = String()
     
-    // Store the ID of the first button pressed (highlighting)
+    // Store the ID of the first button pressed (highlight/unhighlight button)
     var firstButtonId: Int!
     
     // Store character of button pressed
@@ -31,12 +34,13 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         super.viewDidLoad()
         
         // Function builds columns and rows (addSubView). Image updates needed for better landscape support
+        // This can be recreated cleaner, but the 'reactive' design works!
         addFiveVer()
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func statusBarHeight() -> CGFloat {
@@ -52,8 +56,9 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         self.title = "Cards: \(count(inSequence) / 2)"
     }
     
-    // Collection View for displaying selected cards
-    // divide by 2 because 2 characters in inSequence per card
+    // UICollectionView to show selected cards
+    
+    // # of cards held in inSequence string
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return count(inSequence) / 2
     }
@@ -64,13 +69,15 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cell.frame.size.width, height: cell.frame.size.height))
         imageView.contentMode = UIViewContentMode.TopLeft
         
-        // grab every 2 characters
+        // Grab sets of 2 characters from string to build each image filename
         let str:NSString = inSequence
         let length = str.length
         let totalLlength:Int =  length/2
         let indexStart   = indexPath.row * (2)
         let aRange = NSMakeRange(indexStart, 2)
         let cardString:NSString = str.substringWithRange(aRange)
+        
+        // Add c before filename to display clipped versions of card images
         let imageNameString = "c\(cardString).png"
         let front = UIImage(named: imageNameString)
         imageView.image = front
@@ -217,10 +224,11 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         
         } else {
             
-            // Sometimes the user will change their mind.
+            // If user changes rank before selecting a suit, let's change the highlighted image
+            // and remove that single character from the inSequence string.
             if firstChar != "" {
-                inSequence.removeAtIndex(inSequence.endIndex.predecessor())
                 resetTheButton()
+                inSequence.removeAtIndex(inSequence.endIndex.predecessor())
             }
             
             // Set first button variables and change to highlighted image ending with R.png
@@ -292,16 +300,14 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
     }
     
     @IBAction func saveSequence(sender: AnyObject) {
-        
-        //        noRefresh = false  // need to add a noRefresh boolean. No need to always refresh
-        let testObject = PFObject(className: "oDeck")
-        testObject["Sequence"] = inSequence
+        let parseObject = PFObject(className: "oDeck")
+        parseObject["Sequence"] = inSequence
         println("Saving inSequence: \(inSequence)")
-        deviceId = UIDevice.currentDevice().identifierForVendor.UUIDString
-        testObject["Device"] = deviceId
-        testObject.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
+        
+        parseObject["Username"] = PFUser.currentUser()
+        parseObject.saveInBackgroundWithBlock { (success: Bool, error: NSError?) -> Void in
             println("Object has been saved.")
-            var objectID = testObject.objectId
+            var objectID = parseObject.objectId
             println("Object iD is: \(objectID)")
             
         }

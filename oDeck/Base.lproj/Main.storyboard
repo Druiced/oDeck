@@ -52,6 +52,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="3Q0-dJ-9Wj">
+                        <barButtonItem key="leftBarButtonItem" title="Sign Off" id="yom-k9-kuX">
+                            <connections>
+                                <action selector="signOff:" destination="vXZ-lx-hvc" id="JKC-2U-MxT"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="5Mu-AW-Esf">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
