@@ -53,6 +53,9 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Parse user signup or login
         if (PFUser.currentUser() == nil) {
             
+            // if a user logs out then in, reload data
+            noLoadData = false
+            
             var logInViewController = customLogInViewController()
             logInViewController.delegate = self
             
@@ -64,11 +67,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             self.presentViewController(logInViewController, animated: true, completion: nil)
             
         } else {
-
-            self.title = "Connected"
             
-            noLoadData = false
-
             loadData()
 
         }
@@ -293,7 +292,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Load user database from Parse.com
         if noLoadData == false {
             
-            
+            self.title = "Connected"
             timeLineData.removeAllObjects()
             sequenceArray.removeAll()
             var findTimelineData = PFQuery(className:"oDeck")

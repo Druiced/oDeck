@@ -58,7 +58,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Quick Add" id="5Mu-AW-Esf">
-                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.0" green="0.20000000000000001" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <segue destination="ZA9-iO-Q6G" kind="show" id="gQW-zN-2zr"/>
                             </connections>
@@ -89,7 +89,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Tap Rank then Suit" id="1fL-do-1vu">
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="7hM-Ow-KXk">
-                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.0" green="0.20000000000000001" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="saveSequence:" destination="ZA9-iO-Q6G" id="ae2-Ys-dXd"/>
                             </connections>

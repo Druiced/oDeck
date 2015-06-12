@@ -40,6 +40,9 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         // Function builds columns and rows (addSubView). Image updates needed for better landscape support
         // This can be recreated cleaner, but the 'reactive' design works!
         addFiveVer()
+
+        // Set noLoad bool until user saves a new sequence
+        noLoadData = true
         
         // Call orientationChanged function if user changes orientation
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "orientationChanged", name: UIDeviceOrientationDidChangeNotification, object: nil)
