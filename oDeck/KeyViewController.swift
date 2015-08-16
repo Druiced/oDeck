@@ -351,7 +351,18 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         // Set bool so main view will reload with new data
         noLoadData = false
         
+        
         let parseObject = PFObject(className: "oDeck")
+        
+        // Remove extra character from the inSequence string if the 
+        // user hit a value but no suit when hitting save.
+        
+        if count(inSequence) % 2 != 0 {
+
+            inSequence.removeAtIndex(inSequence.endIndex.predecessor())
+
+        }
+        
         parseObject["Sequence"] = inSequence
         
         // Saving Sequence
@@ -369,6 +380,8 @@ class KeyViewController: UIViewController, UICollectionViewDelegateFlowLayout, U
         }
         
         self.navigationController?.popToRootViewControllerAnimated(true)
+        
+        
     }
     
     /*
