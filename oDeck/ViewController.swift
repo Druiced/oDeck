@@ -250,36 +250,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         // Sharing Feature
         
-        var sharedString:String = ""
-        
         var buttonTag:UIButton = sender
-        var str:NSString = sequenceArray[buttonTag.tag]
-        var length = str.length
-        var totalLlength:Int =  length / 2
-        println("total llength: \(totalLlength)")
-        
-        for index in 0...totalLlength - 1 {
-            println("\(index)")
-        
-            var indexStart = index * (2);
-            var aRange = NSMakeRange(indexStart, 2)
-            var cardString:NSString = str.substringWithRange(aRange)
-          
-            println("\(cardString)")
-            
-            sharedString += "[\(cardString)]"
-            
-            println("\(sharedString)")
-            
-        }
-        
-        // Share Feature - Many updates to come
-        
-        let someText:String = "I saved these cards on oDeck for the iPhone:"
-        let theString:String = "\(sharedString)"
-        let odeckurl:NSURL = NSURL(string:"http://odeck.net")!
+        let str:NSString = sequenceArray[buttonTag.tag]
+        let id:NSString = idArray[buttonTag.tag]
+        let length = str.length
+        let totalLlength:Int =  length / 2
+        let someText:String = "I just logged \(totalLlength) cards with oDeck.net:"
+        let odeckurl:NSURL = NSURL(string:"http://odeck.net/?id=\(id)")!
         let activityViewController = UIActivityViewController(
-            activityItems: [someText, theString ,odeckurl],
+            activityItems: [someText, odeckurl],
             applicationActivities: nil)
         self.navigationController!.presentViewController(activityViewController,
             animated: true,
