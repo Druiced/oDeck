@@ -17,8 +17,8 @@
 		497A53C21B269229008A9178 /* customSignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497A53C11B269229008A9178 /* customSignUpViewController.swift */; };
 		497A53C41B269244008A9178 /* customLogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 497A53C31B269244008A9178 /* customLogInViewController.swift */; };
 		498363701B14032C00FA8FB4 /* ComposeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4983636F1B14032C00FA8FB4 /* ComposeCollectionViewCell.swift */; };
+		49AA6FCC1B81BED600DC33ED /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 49F18D251B2C1F1E004E6064 /* README.md */; };
 		49B01B991B14189A00CFF822 /* KeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B01B981B14189A00CFF822 /* KeyViewController.swift */; };
-		49F18D261B2C1F1E004E6064 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 49F18D251B2C1F1E004E6064 /* README.md */; };
 		49F6FD201B0EBEE3009F5070 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6FD1F1B0EBEE3009F5070 /* AppDelegate.swift */; };
 		49F6FD221B0EBEE3009F5070 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49F6FD211B0EBEE3009F5070 /* ViewController.swift */; };
 		49F6FD251B0EBEE3009F5070 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 49F6FD231B0EBEE3009F5070 /* Main.storyboard */; };
@@ -306,6 +306,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49AA6FCC1B81BED600DC33ED /* README.md in Resources */,
 				49F6FD921B0F0389009F5070 /* Keys.plist in Resources */,
 				49F6FD251B0EBEE3009F5070 /* Main.storyboard in Resources */,
 				49F6FD2A1B0EBEE3009F5070 /* LaunchScreen.xib in Resources */,
@@ -335,7 +336,6 @@
 				497A53C41B269244008A9178 /* customLogInViewController.swift in Sources */,
 				49F6FD221B0EBEE3009F5070 /* ViewController.swift in Sources */,
 				49F6FD201B0EBEE3009F5070 /* AppDelegate.swift in Sources */,
-				49F18D261B2C1F1E004E6064 /* README.md in Sources */,
 				49F6FD421B0EBF49009F5070 /* CustomCollectionViewCell.swift in Sources */,
 				497A53C21B269229008A9178 /* customSignUpViewController.swift in Sources */,
 			);

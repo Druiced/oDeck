@@ -57,7 +57,7 @@
                                 <action selector="signOff:" destination="vXZ-lx-hvc" id="JKC-2U-MxT"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Quick Add" id="5Mu-AW-Esf">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="5Mu-AW-Esf">
                             <color key="tintColor" red="0.0" green="0.20000000000000001" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <segue destination="ZA9-iO-Q6G" kind="show" id="gQW-zN-2zr"/>

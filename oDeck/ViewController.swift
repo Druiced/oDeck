@@ -232,11 +232,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         hLayout.addSubview(view2)
 
         // TOP RIGHT Card Count
-        let view3 = UILabel(frame: CGRectMake(0, 0, 100, 20))
-        view3.backgroundColor =  UIColor(red: 0.322, green: 0.459, blue: 0.702, alpha: 1)
-        view3.textColor = UIColor.whiteColor()
-        view3.text = ("\(cellCardCount) Cards")
-        view3.textAlignment = .Right
+        
+        let view3 = UIButton(frame: CGRectMake(0, 0, 100, 20))
+        view3.backgroundColor = UIColor(red: 0.322, green: 0.459, blue: 0.702, alpha: 1)
+        view3.setTitleColor(UIColor.orangeColor(), forState: .Normal)
+        view3.setTitle("\(cellCardCount) Cards", forState: .Normal)
+        view3.titleLabel?.textAlignment = .Right
+        view3.tag = section
+        view3.addTarget(self, action: "delSeq:", forControlEvents: UIControlEvents.TouchUpInside)
+        
         hLayout.addSubview(view3)
 
         return headerView
@@ -265,6 +269,42 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             completion: nil)
     
     }
+
+    func delSeq(sender: UIButton!) {
+        
+        // Option to delete sequences - Needs work
+        
+        var buttonTag:UIButton = sender
+        let str:NSString = sequenceArray[buttonTag.tag]
+        let id:String = idArray[buttonTag.tag]
+        let length = str.length
+        let totalLlength:Int =  length / 2
+        
+        var refreshAlert = UIAlertController(title: "oDeck.net", message: "Ok to delete this \(totalLlength) card set?", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
+            
+            var object:PFObject = PFObject(withoutDataWithClassName: "oDeck", objectId: id)
+            object.deleteInBackground()
+
+            // Should be able to delete row and animate without using loadData()
+            // Disabling table until new data is loaded
+            self.tableView.userInteractionEnabled = false
+            self.tableView.alpha = 0.5
+            noLoadData = false
+            self.loadData()
+        
+        }))
+        
+        refreshAlert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: { (action: UIAlertAction!) in
+            println("Handle Cancel Logic here")
+        }))
+        
+        presentViewController(refreshAlert, animated: true, completion: nil)
+        
+    }
+
+    
     
     @IBAction func loadData() {
         
@@ -275,6 +315,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             timeLineData.removeAllObjects()
             sequenceArray.removeAll()
             var findTimelineData = PFQuery(className:"oDeck")
+            findTimelineData.limit = 50
             findTimelineData.whereKey("Username", equalTo: PFUser.currentUser()!)
             
             findTimelineData.orderByDescending("updatedAt")
@@ -307,8 +348,13 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                         
                         self.tableView.reloadData()
                         
+                        // delSeq() delete sequence workaround
+                        self.tableView.userInteractionEnabled = true
+                        self.tableView.alpha = 1
+
+                        
                         // update title with # of sequences
-                        self.title = "\(self.timeLineData.count)"
+                        self.title = "Sets (\(self.timeLineData.count))"
                         
                         // jump tableview to top
                         self.tableView.scrollRectToVisible(CGRectMake(0, 0, 1, 1), animated: true)
